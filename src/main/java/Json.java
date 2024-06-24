@@ -4,6 +4,8 @@ import org.json.JSONObject;
 public class Json {
 
     private static JSONObject meta;
+    private static JSONObject semesters;
+
 
     static {
         try {
@@ -23,14 +25,27 @@ public class Json {
             // JSON 객체 생성
             JSONObject jsonObject = new JSONObject(sb.toString());
             meta = jsonObject.getJSONObject("meta");
+            semesters = jsonObject.getJSONObject("semesters");
 
         } catch (IOException | org.json.JSONException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * 전체성적 (meta)
+     * res : grades.json meta 에서 가져올 값
+     */
     public static String meta(String res) {
         return meta.getString(res);
+    }
+
+    /**
+     * 학기성적 (semesters)
+     * res : grades.json semesters 에서 가져올 값
+     */
+    public static String semesters(String res) {
+        return semesters.getString(res);
     }
 
     public static void main(String[] args) {
