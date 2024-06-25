@@ -58,7 +58,8 @@ public class Json {
     /**
      * 과목성적 (courses)
      * term : 학기 정보 (예: "2020/10")
-     * data : grades.json -> courses 에서 가져올 값
+     * courseArray -> 예시 "2020/10" 배열을 가져오는
+     * courseList -> "2020/10" 가져온 배열안 객체들을 따로따로 담긴 List  ->  return
      */
     public JSONArray getCourses(String term) {
         return courses.getJSONArray(term);
