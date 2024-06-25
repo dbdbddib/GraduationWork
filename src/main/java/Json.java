@@ -34,10 +34,10 @@ public class Json {
 
     /**
      * 전체성적 (meta)
-     * res : grades.json meta 에서 가져올 값
+     * data : grades.json meta 에서 가져올 값
      */
-    public static String meta(String res) {
-        return meta.getString(res);
+    public static String meta(String data) {
+        return meta.getString(data);
     }
 
     /**

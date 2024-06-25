@@ -26,7 +26,7 @@ public class DAO {
         }
     }
 
-    // 전체성적   학번을 굳이 만들 필요가 있나?    학번을 빼고 DB 넣어보자
+    // 전체성적 학번 필요
     public void meta(){
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -64,10 +64,11 @@ public class DAO {
         //trem : 학기   while 객체가 존재할 때까지 변경 ...
         // String[] term = {"2020/10", "2022/20", "2023/10", "2023/20"};
 
-        ArrayList<String> termList = new ArrayList<>();
-        for (String term : Json.semesters.keySet()) {
-            termList.add(term);
-        }
+        ArrayList<String> termList = new ArrayList<>(Json.semesters.keySet());
+
+//        for (String term : Json.semesters.keySet()) {
+//            termList.add(term);
+//        }
 
         String[] data = {"학기", "신청", "이수", "평점", "백분위", "석차"};
 
