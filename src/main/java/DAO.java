@@ -114,11 +114,11 @@ public class DAO {
             pstmt = conn.prepareStatement("INSERT INTO 전체성적 (과목, 구분, 학점, 실점, 등급, 평점) VALUES (?, ?, ?, ?, ?, ?)");
 
             // "2020/10"(termList) 의 JSON배열을 가져와라
-            for (int i = 0; i < termList.size(); i++) {
+            for (String s : termList) {
                 // Json.courses(termList.get(i)) -> "2020/10" 배열 안 객체 하나씩 setString
-                for (JSONObject course : Json.courses(termList.get(i))) {
-                    for(int j = 0; j < course.length(); j++){
-                        pstmt.setString(i, course.getString(data[j]));
+                for (JSONObject course : Json.courses(s)) {
+                    for (int k = 0; k < data.length; k++) {
+                        pstmt.setString(k + 1, course.getString(data[k]));
                     }
                 }
             }
