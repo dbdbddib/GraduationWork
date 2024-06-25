@@ -5,7 +5,7 @@ import java.io.IOException;
 
 
 public class Passing {
-    public static void main(String[] args) {
+    public Passing() {
         FileReader fr = null;
         FileWriter fw = null;
 
