@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 // Data Access Object(DAO) : Database 에 접속하여 데이터를 저장하거나 읽음
 public class DAO {
@@ -60,15 +61,25 @@ public class DAO {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
-        String[] columns = {"학기", "신청", "이수", "평점", "백분위", "석차"};
+        //trem : 학기   while 객체가 존재할 때까지 변경 ...
+        // String[] term = {"2020/10", "2022/20", "2023/10", "2023/20"};
+
+        ArrayList<String> termList = new ArrayList<>();
+        for (String term : Json.semesters.keySet()) {
+            termList.add(term);
+        }
+
+        String[] data = {"학기", "신청", "이수", "평점", "백분위", "석차"};
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gradu", "root", "root");
             pstmt = conn.prepareStatement("INSERT INTO 전체성적 (학기, 신청, 이수, 평점, 백분위, 석차) VALUES (?, ?, ?, ?, ?, ?)");
 
-            for (int i = 0; i < columns.length; i++) {
-                pstmt.setString(i + 1, Json.meta(columns[i]));
+            for (int i = 0; i < termList.size(); i++) {
+                for (int j = 0; j < data.length; j++) {
+                    pstmt.setString(i + 1, Json.semesters(termList.get(i), data[j]));
+                }
             }
 
             int rowsAffected = pstmt.executeUpdate();

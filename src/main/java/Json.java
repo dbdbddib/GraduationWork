@@ -4,7 +4,7 @@ import org.json.JSONObject;
 public class Json {
 
     private static JSONObject meta;
-    private static JSONObject semesters;
+    public static JSONObject semesters;
 
 
     static {
@@ -42,10 +42,11 @@ public class Json {
 
     /**
      * 학기성적 (semesters)
-     * res : grades.json semesters 에서 가져올 값
+     * term : 학기 정보 (예: "2020/10")
+     * data : grades.json semesters 에서 가져올 값
      */
-    public static String semesters(String res) {
-        return semesters.getString(res);
+    public static String semesters(String term, String data) {
+        return semesters.getJSONObject(term).getString(data);
     }
 
     public static void main(String[] args) {
