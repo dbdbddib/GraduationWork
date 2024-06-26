@@ -9,10 +9,10 @@ public class Json {
 
     private static JSONObject meta;
     public static JSONObject semesters;
-    private JSONObject courses;
-
+    private static JSONObject courses;
+    private static JSONObject info;
     // 생성자로 하고 나머지 static 삭제
-    
+
     static {
         try {
             // JSON 파일 읽기
@@ -32,7 +32,8 @@ public class Json {
             JSONObject jsonObject = new JSONObject(sb.toString());
             meta = jsonObject.getJSONObject("meta");
             semesters = jsonObject.getJSONObject("semesters");
-
+            courses = jsonObject.getJSONObject("courses");
+            info = jsonObject.getJSONObject("info");
         } catch (IOException | org.json.JSONException e) {
             e.printStackTrace();
         }
@@ -59,11 +60,12 @@ public class Json {
      * 과목성적 (courses)
      * term : 학기 정보 (예: "2020/10")
      * courseArray -> 예시 "2020/10" 배열을 가져오는
-     * courseList -> "2020/10" 가져온 배열안 객체들을 따로따로 담긴 List  ->  return
+     * courseList -> "2020/10" 가져온 배열안 객체들을 따로따로 담긴 List  ->  return  (DAO.java -> courses())
      */
     public JSONArray getCourses(String term) {
         return courses.getJSONArray(term);
     }
+
     public static List<JSONObject> courses(String term) {
         Json json = new Json();
 
@@ -73,12 +75,16 @@ public class Json {
 
 
         // "2020/10"의 배열 안 한 객체씩 가져오는 for뮨
-        // courseList -> 배열 안 객체들의 리스트
+        // courseList -> 배열 안 객체들의 리스트  [2020/10, 2023/20, 2022/20, 2023/10]
         List<JSONObject> courseList = new ArrayList<>();
         for (int i = 0; i < courseArray.length(); i++) {
             courseList.add(courseArray.getJSONObject(i));
         }
 
         return courseList;
+    }
+
+    public static String info(String data) {
+        return info.getString(data);
     }
 }
