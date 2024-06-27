@@ -133,7 +133,9 @@ public class GradesDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gradu", "root", "root");
-            pstmt = conn.prepareStatement("INSERT INTO 전체성적 (과목, 구분, 학점, 실점, 등급, 평점, 과목, 구분, 학점, 실점, 등급, 평점, 과목, 구분, 학점, 실점, 등급, 평점, 과목, 구분, 학점, 실점, 등급, 평점) VALUES (?, ?, ?, ?, ?, ?)");
+            pstmt = conn.prepareStatement("INSERT INTO 전체성적 (과목, 구분, 학점, 실점, 등급, 평점, 과목, 구분, 학점, 실점, 등급, 평점, 과목, 구분," +
+                    " 학점, 실점, 등급, 평점, 과목, 구분, 학점, 실점, 등급, 평점) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             for (int i = 0; i < data.length; i++) {
                 pstmt.setString(i + 1, Json.info(data[i]));
