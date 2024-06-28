@@ -1,11 +1,11 @@
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Test {
     public static void main(String[] args) {
+        Json json = new Json("grades.json");
+        Set<String> terms = json.semesters.keySet();
 
-        ArrayList<String> termList = new ArrayList<>(Json.semesters.keySet());
-        System.out.println(termList);
-
-
+        System.out.println(terms);
     }
 }

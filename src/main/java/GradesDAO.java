@@ -2,10 +2,25 @@ import org.json.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 // Data Access Object(DAO) : Database 에 접속하여 데이터를 저장하거나 읽음
 // main()
 public class GradesDAO {
+
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/gradu";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "root";
+
+    private Json json;
+    private final List<String> termList;
+
+    public GradesDAO(String jsonFilePath) {
+        this.json = new Json(jsonFilePath);
+        Set<String> termSet = json.semesters.keySet();
+        this.termList = new ArrayList<>(termSet);
+    }
 
     public static void close(ResultSet rs, Statement pstmt, Connection conn) {
         if (rs != null) {
@@ -31,11 +46,6 @@ public class GradesDAO {
         }
     }
 
-
-    // 학기 데이터 추출
-    private ArrayList<String> termList = new ArrayList<>(Json.semesters.keySet());
-
-
     // 전체성적 end
     public void meta() {
         Connection conn = null;
@@ -45,10 +55,10 @@ public class GradesDAO {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gradu", "root", "root");
+            conn = DriverManager.getConnection(DB_URL, "root", "root");
             pstmt = conn.prepareStatement("INSERT INTO meta (학번, 신청학점, 이수학점, 평점평균, 백분위) VALUES (?, ?, ?, ?, ?)");
             for (int i = 0; i < columns.length; i++) {
-                pstmt.setString(i + 1, Json.meta(columns[i]));
+                pstmt.setString(i + 1, json.meta(columns[i]));
             }
             int rowsAffected = pstmt.executeUpdate();
             System.out.println(rowsAffected + " rows inserted.");
@@ -66,19 +76,16 @@ public class GradesDAO {
     public void semesters() {
         Connection conn = null;
         PreparedStatement pstmt = null;
-//        for (String term : Json.semesters.keySet()) {
-//            termList.add(term);
-//        }
 
         String[] data = {"학번", "학기", "신청", "이수", "평점", "백분위", "석차"};
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gradu", "root", "root");
+            conn = DriverManager.getConnection(DB_URL, "root", "root");
             pstmt = conn.prepareStatement("INSERT INTO semesters (학번, 학기, 신청, 이수, 평점, 백분위, 석차) VALUES (?, ?, ?, ?, ?, ?, ?)");
             for (int i = 0; i < termList.size(); i++) {
                 for (int j = 0; j < data.length; j++) {
-                    pstmt.setString(j + 1, Json.semesters(termList.get(i), data[j]));
+                    pstmt.setString(j + 1, json.semesters(termList.get(i), data[j]));
                 }
             }
             int rowsAffected = pstmt.executeUpdate();
@@ -105,7 +112,7 @@ public class GradesDAO {
             // "2020/10"(termList) 의 JSON배열을 가져와라
             for (String s : termList) {
                 // Json.courses(termList.get(i)) -> "2020/10" 배열 안 객체 하나씩 setString
-                for (JSONObject course : Json.courses(s)) {
+                for (JSONObject course : json.courses(s)) {
                     pstmt.setString(1, s);
                     for (int k = 0; k < data.length; k++) {
                         pstmt.setString(k + 2, course.getString(data[k]));
@@ -140,7 +147,7 @@ public class GradesDAO {
 //                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 //
 //            for (int i = 0; i < data.length; i++) {
-//                pstmt.setString(i + 1, Json.info(data[i]));
+//                pstmt.setString(i + 1, json.info(data[i]));
 //            }
 //            int rowsAffected = pstmt.executeUpdate();
 //            System.out.println(rowsAffected + " rows inserted.");
@@ -157,7 +164,7 @@ public class GradesDAO {
 
 
     public static void main(String[] args) {
-        GradesDAO g = new GradesDAO();
+        GradesDAO g = new GradesDAO("grades.json");
         g.courses();
 
     }
