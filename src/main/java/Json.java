@@ -33,7 +33,6 @@ public class Json {
             meta = jsonObject.getJSONObject("meta");
             semesters = jsonObject.getJSONObject("semesters");
             courses = jsonObject.getJSONObject("courses");
-            info = jsonObject.getJSONObject("info");
         } catch (IOException | org.json.JSONException e) {
             e.printStackTrace();
         }
