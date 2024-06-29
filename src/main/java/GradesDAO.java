@@ -78,19 +78,20 @@ public class GradesDAO {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
-        String[] data = {"학번", "학기", "신청", "이수", "평점", "백분위", "석차"};
+        String[] data = {"학기", "신청", "이수", "평점", "백분위", "석차"};
 
         try {
             Class.forName(DB_DRIVER);
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            pstmt = conn.prepareStatement("INSERT INTO semesters (학번, 학기, 신청, 이수, 평점, 백분위, 석차) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            for (int i = 0; i < termList.size(); i++) {
-                for (int j = 0; j < data.length; j++) {
-                    pstmt.setString(j + 1, json.semesters(termList.get(i), data[j]));
+            pstmt = conn.prepareStatement("INSERT INTO semesters (학기, 신청, 이수, 평점, 백분위, 석차) VALUES (?, ?, ?, ?, ?, ?)");
+            for (String s : termList) {
+                pstmt.setString(1, s);
+                for (int j = 0; j < data.length - 1; j++) {
+                    pstmt.setString(j + 2, json.semesters(s, data[j]));
                 }
+                pstmt.executeUpdate();
             }
-            int rowsAffected = pstmt.executeUpdate();
-            System.out.println(rowsAffected + " rows inserted.");
+            System.out.println("semesters Table All rows inserted.");
         } catch (SQLException ex) {
             System.out.println("SQL error occurred.");
             ex.printStackTrace();
@@ -100,7 +101,6 @@ public class GradesDAO {
             close(null, pstmt, conn);
         }
     }
-
     // 과목성적
     public void courses() {
         Connection conn = null;
@@ -121,7 +121,7 @@ public class GradesDAO {
                     pstmt.executeUpdate();
                 }
             }
-            System.out.println("All rows inserted.");
+            System.out.println("courses Table All rows inserted.");
         } catch (SQLException ex) {
             System.out.println("SQL error occurred.");
             ex.printStackTrace();
@@ -132,41 +132,13 @@ public class GradesDAO {
         }
     }
 
-//    // 개인정보
-//    public void info() {
-//        Connection conn = null;
-//        PreparedStatement pstmt = null;
-//        String[] data = {"학번", "학생구분", "이름", "학적상태", "주민번호", "입학구분", "정원구분",
-//                "학과", "학년", "분반", "휴대전화", "지도교수", "주소", "이메일", "입학시기", "수험번호",
-//                "전형구분", "출신고등학교","고교졸업일자", "입학일자"};
-//        try {
-//            Class.forName(DB_DRIVER);
-//            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-//            pstmt = conn.prepareStatement("INSERT INTO info (학번, 과목, 구분, 학점, 실점, 등급, 평점, 과목, 구분, 학점, " +
-//                    "실점, 등급, 평점, 과목, 구분," +
-//                    " 학점, 실점, 등급, 평점, 과목, 구분, 학점, 실점, 등급, 평점) " +
-//                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-//
-//            for (int i = 0; i < data.length; i++) {
-//                pstmt.setString(i + 1, json.info(data[i]));
-//            }
-//            int rowsAffected = pstmt.executeUpdate();
-//            System.out.println(rowsAffected + " rows inserted.");
-//        } catch (SQLException ex) {
-//            System.out.println("SQL error occurred.");
-//            ex.printStackTrace();
-//        } catch (ClassNotFoundException ex) {
-//            ex.printStackTrace();
-//        } finally {
-//            close(null, pstmt, conn);
-//        }
-//    }
+
 
 
 
     public static void main(String[] args) {
         GradesDAO g = new GradesDAO("grades.json");
-        g.courses();
-
+        InfoDAO i = new InfoDAO("info.json");
+        i.info();
     }
 }

@@ -8,7 +8,7 @@ import org.json.JSONObject;
 public class Json {
 
     private JSONObject meta;
-    JSONObject semesters;
+    public JSONObject semesters;
     private JSONObject courses;
 
     public Json(String filePath) {
@@ -34,18 +34,35 @@ public class Json {
         }
     }
 
+    /**
+     * 전체성적 (meta)
+     * data : grades.json -> meta 객체에서 가져올 값
+     */
     public String meta(String data) {
         return meta.getString(data);
     }
 
+    /**
+     * 학기성적 (semesters)
+     * term : 학기 정보 (예: "2020/10")
+     * data : grades.json -> semesters 객체에서 가져올 값
+     */
     public String semesters(String term, String data) {
         return semesters.getJSONObject(term).getString(data);
     }
 
+
+
     public JSONArray getCourses(String term) {
         return courses.getJSONArray(term);
     }
-
+    /**
+     * 과목성적 (courses)
+     * term : 학기 정보 (예: "2020/10")
+     * data : grades.json -> courses 에서 가져올 값
+     * courseArray -> 예시 "2020/10" 배열을 가져오는
+     * courseList -> "2020/10" 가져온 배열안 객체들을 따로따로 담긴 List  ->  return
+     */
     public List<JSONObject> courses(String term) {
         JSONArray courseArray = getCourses(term);
         List<JSONObject> courseList = new ArrayList<>();
@@ -54,4 +71,6 @@ public class Json {
         }
         return courseList;
     }
+
+
 }
