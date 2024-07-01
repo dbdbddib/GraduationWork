@@ -23,15 +23,16 @@ public class InfoJson {
 
             JSONObject jsonObject = new JSONObject(sb.toString());
             this.info = jsonObject.getJSONObject("info");
-        }catch (IOException | org.json.JSONException e) {
+        } catch (IOException | org.json.JSONException e) {
             e.printStackTrace();
         }
     }
+
     /**
      * 학생정보 (info)
      * data : grades.json -> info 객체에서 가져올 값
      */
-    public String info(String data){
+    public String info(String data) {
         return info.getString(data);
     }
 }

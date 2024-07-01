@@ -101,6 +101,7 @@ public class GradesDAO {
             close(null, pstmt, conn);
         }
     }
+
     // 과목성적
     public void courses() {
         Connection conn = null;
@@ -131,9 +132,6 @@ public class GradesDAO {
             close(null, pstmt, conn);
         }
     }
-
-
-
 
 
     public static void main(String[] args) {

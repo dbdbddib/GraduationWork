@@ -52,10 +52,10 @@ public class Json {
     }
 
 
-
     public JSONArray getCourses(String term) {
         return courses.getJSONArray(term);
     }
+
     /**
      * 과목성적 (courses)
      * term : 학기 정보 (예: "2020/10")
