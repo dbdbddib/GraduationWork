@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,11 +25,11 @@ public class TxtToJson {
             JSONObject finalData = new JSONObject();
             JSONObject meta = parseMetaData(fileContent);
             JSONObject semesters = parseSemesters(fileContent);
-//            JSONObject courses = parseCourses(fileContent);
+            JSONObject courses = parseCourses(fileContent);
 
             finalData.put("meta", meta);
             finalData.put("semesters", semesters);
-//            finalData.put("courses", courses);
+            finalData.put("courses", courses);
 
             // JSON 파일로 저장
             try (FileWriter fileWriter = new FileWriter("output.json")) {
@@ -58,7 +59,7 @@ public class TxtToJson {
         String[] lines = fileContent.split("\n");
 
         // 예제 JSON 데이터 (실제 데이터는 fileContent로부터 읽어올 것입니다)
-        String data = "{'2020/10': {'학기': '1', '신청': '20', '이수': '20', '평점': '4.15', '백분위': '96.32', '석차': '17 / 125'}, '2022/20': {'학기': '2', '신청': '20', '이수': '20', '평점': '4.03', '백분위': '95.05', '석차': '12 / 110'}, '2023/10': {'학기': '1', '신청': '17', '이수': '17', '평점': '4.06', '백분위': '95.37', '석차': '22 / 103'}, '2023/20': {'학기': '2', '신청': '20', '이수': '20', '평점': '4.40', '백분위': '98.95', '석차': '8 / 101'}}";
+        String data = lines[1];
 
         // JSON 데이터 파싱
         JSONObject jsonData = new JSONObject(data.replace("'", "\""));
@@ -67,6 +68,7 @@ public class TxtToJson {
         Set<String> termSet = jsonData.keySet();
         List<String> termList = new ArrayList<>(termSet);
         Collections.sort(termList);
+        System.out.println(termList);
 
         // 각 학기의 정보를 JSONObject에 저장
         for (String term : termList) {
@@ -76,34 +78,28 @@ public class TxtToJson {
 
         return semesters;
     }
-//
-//    private static JSONObject parseCourses(String fileContent) {
-//        JSONObject courses = new JSONObject();
-//        String[] lines = fileContent.split("\n");
-//        String currentSemester = null;
-//        JSONArray courseArray = null;
-//
-//        for (String line : lines) {
-//            if (line.contains("': [")) {
-//                currentSemester = line.split(": \\[")[0].trim().replace("'", "");
-//                courseArray = new JSONArray();
-//            } else if (line.contains("{'과목':")) {
-//                String[] parts = line.replace("{", "").replace("}", "").replace("'", "").split(", ");
-//                JSONObject course = new JSONObject();
-//                for (String part : parts) {
-//                    String[] pair = part.split(": ");
-//                    course.put(pair[0].trim(), pair[1].trim());
-//                }
-//                if (courseArray != null) {
-//                    courseArray.put(course);
-//                }
-//            } else if (line.contains("]")) {
-//                if (currentSemester != null && courseArray != null) {
-//                    courses.put(currentSemester, courseArray);
-//                }
-//            }
-//        }
-//
-//        return courses;
-//    }
+
+    private static JSONObject parseCourses(String fileContent) {
+        JSONObject courses = new JSONObject();
+        String[] lines = fileContent.split("\n");
+
+        // 세 번째 줄에 과목 정보가 있다고 가정
+        String data = lines[2];
+
+        // JSON 데이터 파싱
+        JSONObject jsonData = new JSONObject(data.replace("'", "\""));
+
+        // 학기 목록 추출 및 정렬
+        Set<String> termSet = jsonData.keySet();
+        List<String> termList = new ArrayList<>(termSet);
+        Collections.sort(termList);
+
+        // 각 학기의 과목 정보를 JSONObject에 저장
+        for (String term : termList) {
+            JSONArray termCourses = jsonData.getJSONArray(term);
+            courses.put(term, termCourses);
+        }
+
+        return courses;
+    }
 }
