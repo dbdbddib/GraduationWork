@@ -11,9 +11,9 @@ public class Passing {
 
         try {
             // 읽을 파일의 경로를 설정합니다.
-            fr = new FileReader("C:\\Users\\admin\\Desktop\\Stis_Remake-main\\log\\202003377\\info.txt");
+            fr = new FileReader("C:\\Users\\admin\\Desktop\\Stis_Remake-main (1)\\Stis_Remake-main\\log\\202003377\\grades.txt");
             // 저장할 파일의 경로를 설정합니다.
-            fw = new FileWriter("info.txt");
+            fw = new FileWriter("grades.txt");
 
             int c;
             while ((c = fr.read()) != -1) {

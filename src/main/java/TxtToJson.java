@@ -45,10 +45,10 @@ public class TxtToJson {
         String[] lines = fileContent.split("\n");
 
         meta.put("학번", "202003377"); // 학번은 예시 데이터로 고정
-        meta.put("신청학점", lines[0].split(": ")[1].trim().replace("'", ""));
-        meta.put("이수학점", lines[1].split(": ")[1].trim().replace("'", ""));
-        meta.put("평점평균", lines[2].split(": ")[1].trim().replace("'", ""));
-        meta.put("백분위점수", lines[3].split(": ")[1].trim().replace("'", ""));
+        meta.put("신청학점", lines[0].split("신청학점': '")[1].split("'")[0].trim());
+        meta.put("이수학점", lines[0].split("이수학점': '")[1].split("'")[0].trim());
+        meta.put("평점평균", lines[0].split("평점평균': '")[1].split("'")[0].trim());
+        meta.put("백분위점수", lines[0].split("백분위점수': '")[1].split("'")[0].trim());
 
         return meta;
     }

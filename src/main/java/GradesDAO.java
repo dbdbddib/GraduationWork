@@ -137,8 +137,8 @@ public class GradesDAO {
 
 
     public static void main(String[] args) {
-        GradesDAO g = new GradesDAO("grades.json");
-        InfoDAO i = new InfoDAO("info.json");
-        i.info();
+//        GradesDAO g = new GradesDAO("grades.json");
+//        InfoDAO i = new InfoDAO("info.json");
+        Passing p = new Passing();
     }
 }
