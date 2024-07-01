@@ -6,10 +6,10 @@ import org.json.JSONObject;
 
 public class TxtToJson {
 
-    public static void main(String[] args) {
+    public TxtToJson(String fileName) {
         try {
             // 파일 읽기
-            File file = new File("grades.txt");
+            File file = new File(fileName);
             BufferedReader br = new BufferedReader(new FileReader(file));
             StringBuilder sb = new StringBuilder();
             String line;
@@ -41,7 +41,7 @@ public class TxtToJson {
         }
     }
 
-    private static JSONObject parseMetaData(String fileContent) {
+    private JSONObject parseMetaData(String fileContent) {
         JSONObject meta = new JSONObject();
         String[] lines = fileContent.split("\n");
 
@@ -54,7 +54,7 @@ public class TxtToJson {
         return meta;
     }
 
-    private static JSONObject parseSemesters(String fileContent) {
+    private JSONObject parseSemesters(String fileContent) {
         JSONObject semesters = new JSONObject();
         String[] lines = fileContent.split("\n");
 
@@ -79,7 +79,7 @@ public class TxtToJson {
         return semesters;
     }
 
-    private static JSONObject parseCourses(String fileContent) {
+    private JSONObject parseCourses(String fileContent) {
         JSONObject courses = new JSONObject();
         String[] lines = fileContent.split("\n");
 
