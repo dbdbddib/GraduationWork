@@ -23,11 +23,11 @@ public class TxtToJson {
             // JSON 객체 생성
             JSONObject finalData = new JSONObject();
             JSONObject meta = parseMetaData(fileContent);
-//            JSONObject semesters = parseSemesters(fileContent);
+            JSONObject semesters = parseSemesters(fileContent);
 //            JSONObject courses = parseCourses(fileContent);
 
             finalData.put("meta", meta);
-//            finalData.put("semesters", semesters);
+            finalData.put("semesters", semesters);
 //            finalData.put("courses", courses);
 
             // JSON 파일로 저장
@@ -53,24 +53,29 @@ public class TxtToJson {
         return meta;
     }
 
-//    private static JSONObject parseSemesters(String fileContent) {
-//        JSONObject semesters = new JSONObject();
-//        String[] lines = fileContent.split("\n");
-//        for (String line : lines) {
-//            if (line.contains("{'학기':")) {
-//                String[] parts = line.split(": \\{");
-//                String key = parts[0].trim().replace("'", "");
-//                String[] values = parts[1].replace("'}", "").replace("'", "").split(", ");
-//                JSONObject semester = new JSONObject();
-//                for (String value : values) {
-//                    String[] pair = value.split(": ");
-//                    semester.put(pair[0].trim(), pair[1].trim());
-//                }
-//                semesters.put(key, semester);
-//            }
-//        }
-//        return semesters;
-//    }
+    private static JSONObject parseSemesters(String fileContent) {
+        JSONObject semesters = new JSONObject();
+        String[] lines = fileContent.split("\n");
+
+        // 예제 JSON 데이터 (실제 데이터는 fileContent로부터 읽어올 것입니다)
+        String data = "{'2020/10': {'학기': '1', '신청': '20', '이수': '20', '평점': '4.15', '백분위': '96.32', '석차': '17 / 125'}, '2022/20': {'학기': '2', '신청': '20', '이수': '20', '평점': '4.03', '백분위': '95.05', '석차': '12 / 110'}, '2023/10': {'학기': '1', '신청': '17', '이수': '17', '평점': '4.06', '백분위': '95.37', '석차': '22 / 103'}, '2023/20': {'학기': '2', '신청': '20', '이수': '20', '평점': '4.40', '백분위': '98.95', '석차': '8 / 101'}}";
+
+        // JSON 데이터 파싱
+        JSONObject jsonData = new JSONObject(data.replace("'", "\""));
+
+        // 학기 목록 추출 및 정렬
+        Set<String> termSet = jsonData.keySet();
+        List<String> termList = new ArrayList<>(termSet);
+        Collections.sort(termList);
+
+        // 각 학기의 정보를 JSONObject에 저장
+        for (String term : termList) {
+            JSONObject termData = jsonData.getJSONObject(term);
+            semesters.put(term, termData);
+        }
+
+        return semesters;
+    }
 //
 //    private static JSONObject parseCourses(String fileContent) {
 //        JSONObject courses = new JSONObject();
